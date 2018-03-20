@@ -1,0 +1,11 @@
+struct myStruct {
+    int i;
+    bool j;
+};
+
+void main(int test, bool test1){
+    struct myStruct a;
+    int x;
+    int y;
+    bool z;
+}

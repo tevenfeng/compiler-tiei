@@ -1,0 +1,359 @@
+// This part is added as-it-is on top of the generated scanner
+//
+
+import java_cup.runtime.*; // defines the Symbol class
+
+// The generated scanner will return a Symbol for each token that it finds.
+// A Symbol contains an Object field named value; that field will be of type
+// TokenVal, defined below.
+//
+// A TokenVal object contains the line number on which the token occurs as
+// well as the number of the character on that line that starts the token.
+// Some tokens (literals and IDs) also include the value of the token.
+
+class TokenVal {
+      private int lineNum;
+      private int charPos;
+      TokenVal(int lineNum, int charPos){
+            this.lineNum = lineNum;
+            this.charPos = charPos;
+      }
+}
+
+class IntLitTokenVal extends TokenVal {
+      public int intVal;
+      IntLitTokenVal(int lineNum, int charPos, int intVal){
+            super(lineNum, charPos);
+            this.intVal = intVal;
+      }
+}
+
+class IdTokenVal extends TokenVal {
+      public String idVal;
+      IdTokenVal(int lineNum, int charPos, String idVal){
+            super(lineNum, charPos);
+            this.idVal = idVal;
+      }
+}
+
+class StrLitTokenVal extends TokenVal {
+      public String strVal;
+      StrLitTokenVal(int lineNum, int charPos, String strVal){
+            super(lineNum, charPos);
+            this.strVal = strVal;
+      }
+}
+
+// The following class is used to keep track of the character number at which
+// the current token starts on its line.
+class CharNum {
+      static int lineNum = 1;
+      static int colNum = 1;
+      static int line = 1;
+      static int col = 1;
+      static void setPos() {
+            lineNum = line;
+            colNum = col;
+      }
+}
+%%
+
+DIGIT=        [0-9]
+WHITESPACE=   [\040\t]
+LETTER=       [a-zA-Z]
+NUMBER=       {DIGIT}+
+NEWLINE=      \n
+DOUBLEQUOTE=  \"
+ESCAPABLE=    \\n|\\'|\\\"|\\\\|\\t|\\\?
+ESC_NONEWLINE= \\'|\\\"|\\\\|\\t|\\\?
+
+%implements java_cup.runtime.Scanner
+%function next_token
+%type java_cup.runtime.Symbol
+
+%eofval{
+return new Symbol(sym.EOF);
+%eofval}
+
+%line
+
+%%
+"++" {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      return new Symbol(sym.PLUSPLUS, new TokenVal(CharNum.lineNum, CharNum.colNum));
+}
+
+"/" {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      return new Symbol(sym.DIVIDE, new TokenVal(CharNum.lineNum, CharNum.colNum));
+}
+
+"==" {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      return new Symbol(sym.EQUALS, new TokenVal(CharNum.lineNum, CharNum.colNum));
+}
+
+">" {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      return new Symbol(sym.GREATER, new TokenVal(CharNum.lineNum, CharNum.colNum));
+}
+
+"(" {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      return new Symbol(sym.LPAREN, new TokenVal(CharNum.lineNum, CharNum.colNum));
+}
+
+"int" {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      return new Symbol(sym.INT, new TokenVal(CharNum.lineNum, CharNum.colNum));
+}
+
+"<" {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      return new Symbol(sym.LESS, new TokenVal(CharNum.lineNum, CharNum.colNum));
+}
+
+"-" {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      return new Symbol(sym.MINUS, new TokenVal(CharNum.lineNum, CharNum.colNum));
+}
+
+"<<" {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      return new Symbol(sym.WRITE, new TokenVal(CharNum.lineNum, CharNum.colNum));
+}
+
+")" {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      return new Symbol(sym.RPAREN, new TokenVal(CharNum.lineNum, CharNum.colNum));
+}
+
+"!" {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      return new Symbol(sym.NOT, new TokenVal(CharNum.lineNum, CharNum.colNum));
+}
+
+";" {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      return new Symbol(sym.SEMICOLON, new TokenVal(CharNum.lineNum, CharNum.colNum));
+}
+
+"&&" {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      return new Symbol(sym.AND, new TokenVal(CharNum.lineNum, CharNum.colNum));
+}
+
+"||" {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      return new Symbol(sym.OR, new TokenVal(CharNum.lineNum, CharNum.colNum));
+}
+
+"bool" {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      return new Symbol(sym.BOOL, new TokenVal(CharNum.lineNum, CharNum.colNum));
+}
+
+"," {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      return new Symbol(sym.COMMA, new TokenVal(CharNum.lineNum, CharNum.colNum));
+}
+
+"+" {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      return new Symbol(sym.PLUS, new TokenVal(CharNum.lineNum, CharNum.colNum));
+}
+
+"=" {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      return new Symbol(sym.ASSIGN, new TokenVal(CharNum.lineNum, CharNum.colNum)); 
+}
+
+"<=" {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      return new Symbol(sym.LESSEQ, new TokenVal(CharNum.lineNum, CharNum.colNum));
+}
+
+"if" {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      return new Symbol(sym.IF, new TokenVal(CharNum.lineNum, CharNum.colNum));
+}
+
+"." {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      return new Symbol(sym.DOT, new TokenVal(CharNum.lineNum, CharNum.colNum));
+}
+
+"--" {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      return new Symbol(sym.MINUSMINUS, new TokenVal(CharNum.lineNum, CharNum.colNum));
+}
+
+"return" {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      return new Symbol(sym.RETURN, new TokenVal(CharNum.lineNum, CharNum.colNum));
+}
+
+"true" {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      return new Symbol(sym.TRUE, new TokenVal(CharNum.lineNum, CharNum.colNum));
+}
+
+"{" {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      return new Symbol(sym.LCURLY, new TokenVal(CharNum.lineNum, CharNum.colNum));
+}
+
+"cin" {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      return new Symbol(sym.CIN, new TokenVal(CharNum.lineNum, CharNum.colNum));
+}
+
+"void" {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      return new Symbol(sym.VOID, new TokenVal(CharNum.lineNum, CharNum.colNum));
+}
+
+"}" {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      return new Symbol(sym.RCURLY, new TokenVal(CharNum.lineNum, CharNum.colNum));
+}
+
+{NUMBER} {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      int tmp = 0;
+      try{
+            tmp = new Integer(yytext()).intValue();
+      }catch(Exception e){
+            System.out.println("integer literal too large;");
+            tmp = Integer.MAX_VALUE;
+      }
+      return new Symbol(sym.INTLITERAL, new IntLitTokenVal(CharNum.lineNum, CharNum.colNum, tmp));
+}
+
+"*" {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      return new Symbol(sym.TIMES, new TokenVal(CharNum.lineNum, CharNum.colNum)); 
+}
+
+"else" {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      return new Symbol(sym.ELSE, new TokenVal(CharNum.lineNum, CharNum.colNum));
+}
+
+"cout" {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      return new Symbol(sym.COUT, new TokenVal(CharNum.lineNum, CharNum.colNum));
+}
+
+">>" {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      return new Symbol(sym.READ, new TokenVal(CharNum.lineNum, CharNum.colNum));
+}
+
+"!=" {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      return new Symbol(sym.NOTEQUALS, new TokenVal(CharNum.lineNum, CharNum.colNum));
+}
+
+"while" {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      return new Symbol(sym.WHILE, new TokenVal(CharNum.lineNum, CharNum.colNum));
+}
+
+">=" {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      return new Symbol(sym.GREATEREQ, new TokenVal(CharNum.lineNum, CharNum.colNum));
+}
+
+"false" {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      return new Symbol(sym.FALSE, new TokenVal(CharNum.lineNum, CharNum.colNum));
+}
+
+"struct" {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      return new Symbol(sym.STRUCT, new TokenVal(CharNum.lineNum, CharNum.colNum));
+}
+
+{WHITESPACE} {
+      CharNum.setPos();
+      CharNum.col++;
+}
+
+(([//#])(.)*) {
+      CharNum.line += 1;
+      CharNum.col = 1;
+      CharNum.setPos();
+}
+
+{NEWLINE} {
+      CharNum.line += 1;
+      CharNum.col = 1;
+      CharNum.setPos();
+}
+
+({LETTER}|"_")({LETTER}|{DIGIT}|"_")* {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      return new Symbol(sym.ID, new IdTokenVal(CharNum.lineNum, CharNum.colNum, yytext()));
+}
+
+({DOUBLEQUOTE})([^\\\"])*({NEWLINE}|\Eof)([^\\\"])*({DOUBLEQUOTE}?)  {
+      System.out.println("unterminated string literal ignored: "+yytext());
+}
+
+({DOUBLEQUOTE})([^\\\"])*(\\[^nt'\"\?\\])([^\\\"])*({DOUBLEQUOTE})  {
+      System.out.println("string literal with bad escaped character ignored: "+yytext());
+}
+
+({DOUBLEQUOTE})((\\[^nt'\"\?\\\n])|[^\"\n])*({NEWLINE}|\Eof) {
+      System.out.println("unterminated string literal with bad escaped character ignored: "+yytext());
+}
+
+({DOUBLEQUOTE})({ESCAPABLE}|[^\\\"\n])*({DOUBLEQUOTE})  {
+      CharNum.setPos();
+      CharNum.col += yytext().length();
+      return new Symbol(sym.STRINGLITERAL,new StrLitTokenVal(CharNum.lineNum, CharNum.colNum, yytext()));
+}
+
+. {
+      System.out.println("illegal character ignored: " + yytext());
+}

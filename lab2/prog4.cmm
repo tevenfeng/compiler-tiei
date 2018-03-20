@@ -1,0 +1,19 @@
+int x;
+int y;
+int z;
+
+cin >> x;
+cin >> y;
+
+cout << z;
+
+cout << "This is \n correct;";
+cout << "This is correct";
+cout << "this is\ not corrent";
+cout << "this is\a not corrent";
+cout << "";
+cout << "THIS IS 
+NOT CORRECT;"
+"very bad \ string\
+abc"
+ad

@@ -1,0 +1,11 @@
+bool max;
+void main() {
+    int a;
+    max(bool) = true;
+    cout << "a: ";
+    cin >> a(int);
+    a(int) = (a(int) + max(bool));
+    cout << "a = ";
+    cout << a(int);
+}
+

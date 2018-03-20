@@ -1,0 +1,25 @@
+void f(int x, int y){
+    return;
+}
+
+int d(){
+    return 1;
+}
+
+struct myStruct{
+    int x;
+    bool y;
+};
+
+int main(){
+    struct myStruct a;
+    int x;
+    int k;
+    int y;
+    x = d();
+    x = 1;
+    a.x++;
+    f(1,2);
+    a.x = 0;
+    return 0;
+}
